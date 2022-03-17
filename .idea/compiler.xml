@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="PP_1_1_4Hibernate" />
         <module name="TaskJDBC" />
+        <module name="Java_pre-project_1.1.4" />
       </profile>
     </annotationProcessing>
   </component>

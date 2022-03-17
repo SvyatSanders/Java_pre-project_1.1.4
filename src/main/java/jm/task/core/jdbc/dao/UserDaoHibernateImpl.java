@@ -106,6 +106,11 @@ public class UserDaoHibernateImpl implements UserDao {
         } finally {
             session.close();
         }
+    }
 
+    public void closeConnection() {
+        if (factory != null) {
+            factory.close();
+        }
     }
 }

@@ -8,7 +8,7 @@ import jm.task.core.jdbc.model.User;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
-    private final UserDao ud;
+    private final UserDaoHibernateImpl ud;
 
     public UserServiceImpl() {
         this.ud = new UserDaoHibernateImpl();
@@ -36,5 +36,9 @@ public class UserServiceImpl implements UserService {
 
     public void cleanUsersTable() {
         ud.cleanUsersTable();
+    }
+
+    public void closeConnection() {
+        ud.closeConnection();
     }
 }

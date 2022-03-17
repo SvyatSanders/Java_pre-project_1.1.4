@@ -13,7 +13,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        UserService us = new UserServiceImpl();
+        UserServiceImpl us = new UserServiceImpl();
         us.createUsersTable();
         us.saveUser("Gregory", "Leps", (byte) 42);
         us.saveUser("Ivan", "Vasilievich", (byte) 45);
@@ -23,6 +23,7 @@ public class Main {
         usersList.stream().forEach(System.out::println);
         us.cleanUsersTable();
         us.dropUsersTable();
+        us.closeConnection();
     }
 }
 
