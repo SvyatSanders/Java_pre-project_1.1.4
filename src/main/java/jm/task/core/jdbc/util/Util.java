@@ -20,9 +20,15 @@ public class Util {
     private static final String DB_PASSWORD = "540880Zaq";
 
     // SessionFactory - для подключения к БД через Hibernate
-    private SessionFactory sessionFactory = null;
+    private SessionFactory sessionFactory;
+    private static SessionFactory sessionFactoryToClose;
+
     // Connection - для подключения к БД через JDBC
     private Connection connection = null;
+
+    public static SessionFactory getSessionFactoryToClose() {
+        return sessionFactoryToClose;
+    }
 
     /**
      * получаем Factory для соединения с БД с помощью Hibernate
@@ -39,7 +45,7 @@ public class Util {
             try {
                 Configuration configuration = new Configuration();
                 //The Properties class represents a persistent set of properties.
-                Properties properties = new Properties();
+                Properties properties = new Properties();  // свойства
                 properties.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
                 properties.put(Environment.URL, "jdbc:mysql://localhost:3306/JAVA_DB?useSSL=false");
                 properties.put(Environment.USER, "root");
@@ -47,8 +53,8 @@ public class Util {
                 properties.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
                 properties.put(Environment.SHOW_SQL, "true");
                 properties.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-                // Environment.HBM2DDL_AUTO - меняет столбцы местами?? по алфавиту??
-//            settings.put(Environment.HBM2DDL_AUTO, "create-drop");
+                // Environment.HBM2DDL_AUTO - Автоматически проверяет или экспортирует DDL схемы в базу данных при создании
+//                properties.put(Environment.HBM2DDL_AUTO, "update");
 
                 configuration.setProperties(properties);
                 configuration.addAnnotatedClass(User.class);
@@ -58,6 +64,7 @@ public class Util {
                         .applySettings(configuration.getProperties()).build();
 
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+                sessionFactoryToClose = sessionFactory;
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -77,8 +84,7 @@ public class Util {
             // /JAVA_DB - название нашей базы данных
             // A connection (session) with a specific database. SQL statements are executed and results are returned
             // within the context of a connection.
-            connection = DriverManager.getConnection(DB_URL,
-                    DB_USERNAME, DB_PASSWORD);
+            connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
             System.out.println("Connection OK...!!!");
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Connection failed...!!!");
@@ -86,5 +92,4 @@ public class Util {
         }
         return connection;
     }
-
 }
